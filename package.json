@@ -1,0 +1,37 @@
+{
+  "name": "dialogflow-v2-client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ./server && eslint ./data && eslint ./lang && eslint ./tests",
+    "test": "npm run lint && PORT=3001 SILENT=true ./node_modules/mocha/bin/mocha tests -c --exit --no-warnings",
+    "postinstall": "node decode-keys",
+    "encrypt": "node encrypt-keys",
+    "start": "GOOGLE_APPLICATION_CREDENTIALS=service-key.json node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/godo13405/dialogflow-v2-client.git"
+  },
+  "author": "Goncalo Andrade",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/godo13405/dialogflow-v2-client/issues"
+  },
+  "homepage": "https://github.com/godo13405/dialogflow-v2-client#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.2",
+    "dialogflow": "^0.5.0",
+    "express": "^4.16.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "es6-promise": "^4.2.4",
+    "eslint": "^4.12.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "mocha": "^5.2.0"
+  }
+}
