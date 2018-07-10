@@ -6,23 +6,25 @@ html {
   box-sizing: border-box;
   font-family: 'Helvetice Neue', 'Helvetica', 'Arial', sans-serif;
 }
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 *, *:before, *:after {
   box-sizing: inherit;
 }
 
 body {
-  display: table-cell;
-  width: 100vw;
-  height: 100vh;
-  vertical-align: middle;
-  text-align: center;
   position: relative;
   background: #efefef;
   font-size: 16px;
 }
 
-body::after, body::before {
+body::before {
   content: "";
   position: absolute;
   top: 0;
@@ -37,31 +39,31 @@ body::before {
   height: 40vh;
   background: url(/dragon-logo.svg) -4vw 2vh #BD2624 no-repeat;
   background-size: auto 50vh;
-}
-
-body::after {
-  top: 40vh;
-  left: -5%;
-  background: url(/brush.svg) no-repeat;
-  transform: rotate(180deg);
-  height: 130px;
-  margin-top: -125px;
-  background-size: 110% 130px;
+  mask: url(bg.svg);
+  mask-position: center bottom;
+  -webkit-mask: url(bg.svg);
+  -webkit-mask-position: center bottom;
 }
 
 .widget-container {
-  width: 100vw;
+  width: 100%;
   height: 100%;
   max-width: 750px;
-  max-height: 820px;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 @media all and (max-height: 905px) {
   .widget-container {
     max-height: 100%;
+  }
+}
+
+@media all and (min-height: 905px) {
+  .widget-container {
+    border-bottom: 10vh solid transparent;
   }
 }
 
@@ -77,12 +79,12 @@ iframe {
   width: 100%;
   left: 0;
   bottom: 0;
-  height: 1em;
   margin: 0;
   padding: .75rem 0;
-  height: 1em;
+  height: 2.5em;
   background-color: rgba(239, 239, 239, .85);
   border-bottom: 1px solid rgb(245, 245, 245);
+  text-align: center;
 }
 
 @media all and (max-height: 905px) {
@@ -130,20 +132,27 @@ iframe {
   left: 0;
   right: 0;
 }
-
+.card,
 .speech-bubble {
   background: #fff;
-  width: 60%;
   min-width: 280px;
-  max-width: 350px;
   padding: .8em;
   border-radius: .4em;
   text-align: left;
   position: relative;
   margin: .6em;
   box-shadow: 0 1px 2px rgba(50, 50, 50, .2);
-  animation: bubble-in .2s ease-out;
+  animation: bubble-in .4s ease-out;
   animation-fill-mode: forwards;
+}
+.speech-bubble {
+  width: 60%;
+  max-width: 350px;
+}
+.card {
+  width: 70%;
+  max-width: 450px;
+  animation-duration: 1.2s;
 }
 
 .speech-bubble:after {
@@ -166,6 +175,7 @@ iframe {
 .speech-bubble.bot-said {
   background: #a4201e;
   color: #fff;
+  mix-blend-mode: screen;
 }
 
 .speech-bubble.bot-said:after {
@@ -196,6 +206,18 @@ iframe {
     height: 0;
     padding: 0;
   }
+}
+
+.card h2 {
+  border-bottom: 1px solid #a4201e;
+  margin: 0;
+  padding: 0 0 .2em;
+  color: #a4201e;
+  font-family: "Georgia", serif;
+  font-weight: 400;
+}
+.card p {
+  color: #666;
 }
 
 .user-mic, .bot-mute {
@@ -235,4 +257,22 @@ iframe {
 }
 .bot-mute input:not(:checked) ~ span:after {
   opacity: 0;
+}
+.listening {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  background-image: url(mic.svg), url(pulse.svg);
+  background-repeat: no-repeat, no-repeat;
+  background-position: center center, 49.6% 45%;
+  background-color: rgba(255,255,255,.7);
+  background-size: 100px, 300px;
+  opacity: 0;
+  transition: opacity .2s ease-out;
+}
+body.listening .listening {
+  opacity: 1;
 }

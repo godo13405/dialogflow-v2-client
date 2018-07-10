@@ -1,5 +1,10 @@
 'use strict';
 
+const recognition = new(window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+recognition.lang = 'en-US';
+recognition.interimResults = false;
+recognition.maxAlternatives = 5;
+
 let mute = false;
 
 function userInputs(input) {
@@ -12,6 +17,9 @@ function userInputs(input) {
     response.json().then(data => {
       speechBubble(data.fulfillmentText, 'bot');
       if (!mute) {say(data.fulfillmentText)};
+      if (data.fulfillmentMessages[0].card) {
+        buildCard(data.fulfillmentMessages[0].card);
+      }
     });
 
   }).catch(err => {
@@ -33,22 +41,27 @@ function say(input) {
   synth.speak(utterThis);
 }
 
-function listen(input) {
-  let recognition = new(window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
-  recognition.lang = 'en-US';
-  recognition.interimResults = false;
-  recognition.maxAlternatives = 5;
-  recognition.start();
-
-  recognition.onresult = function(event) {
-    userInputs(event.results[0][0].transcript);
-  };
-}
-
 function startListening(input) {
-  listen(input);
+  document.querySelector('body').className = document.querySelector('body').className + ' listening';
+    recognition.start();
+    recognition.onresult = function(event) {
+      userInputs(event.results[0][0].transcript);
+      stopListening();
+    };
+}
+function stopListening() {
+    recognition.stop();
+    document.querySelector('body').className = document.querySelector('body').className.replace(/\slistening/gi, '');
 }
 
 function botToggleMute() {
   mute = !mute;
+}
+
+function buildCard(input) {
+    let bubble = document.createElement('div'),
+      container = document.querySelector('.chat-container');
+    bubble.innerHTML = `<h2>${input.title}</h2><p>${input.subtitle}</p>`;
+    bubble.classList = `card bot-said`;
+    container.appendChild(bubble);
 }
