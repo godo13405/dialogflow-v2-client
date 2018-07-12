@@ -22,28 +22,31 @@ const sessionPath = sessionClient.sessionPath(projectId, sessionId);
 
 // The text query request.
 const request = {
-    session: sessionPath,
-    source: 'web',
-    capabilities: ['screen', 'audio'],
-    queryInput: {
-        text: {
-            text: 'hi',
-            languageCode: languageCode,
-        },
-    },
+  session: sessionPath,
+  queryParams: {
+    payload: {
+      source: 'web'
+    }
+  },
+  queryInput: {
+    text: {
+      text: 'hi',
+      languageCode: languageCode,
+    }
+  },
 };
 
 // Send request and log result
 function dialogflowBridge(req, res) {
   request.queryInput.text.text = req.query.input;
-    return sessionClient
-        .detectIntent(request)
-        .then(response => {
-          return res.json(response[0].queryResult);
-        })
-        .catch(err => {
-            console.error('ERROR:', err);
-        });
+  return sessionClient
+    .detectIntent(request)
+    .then(response => {
+      return res.json(response[0].queryResult);
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
 }
 
 ex.use(bodyParser.json());
@@ -52,5 +55,5 @@ ex.use('/', express.static('./docs'));
 ex.get('/bridge', dialogflowBridge);
 const port = process.env.PORT || 3003;
 ex.listen(port, () => {
-  if (!process.env.SILENT) console.log('Spell Book is open on port '+port);
+  if (!process.env.SILENT) console.log('Spell Book is open on port ' + port);
 });

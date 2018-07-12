@@ -53,6 +53,8 @@ body::before {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 @media all and (max-height: 905px) {
@@ -110,6 +112,9 @@ iframe {
   text-decoration: none;
   color: rgba(50, 50, 50, .6);
 }
+.user-input-container {
+  height: 3em;
+}
 
 .user-input {
   position: absolute;
@@ -125,12 +130,8 @@ iframe {
 
 .chat-container {
   display: flex;
-  flex-direction: column;
-  padding-bottom: 3rem;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  flex-direction: column-reverse;
+  flex: 1;
 }
 .card,
 .speech-bubble {
@@ -277,4 +278,19 @@ iframe {
 body.listening .listening {
   opacity: 1;
   pointer-events: all;
+}
+.suggestions-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+.suggestion {
+  display: inline-block;
+  padding: .6em 1em;
+  border: 1px solid rgba(50,50,50,.2);
+  border-radius: 1.5em;
+  margin-right: 1em;
+  cursor: pointer;
+  animation: bubble-in .4s ease-out;
+  animation-fill-mode: forwards;
 }
