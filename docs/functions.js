@@ -21,8 +21,8 @@ function userInputs(input) {
       if (!mute) {
         say(data.fulfillmentSpeech)
       };
-      if (data.payload && data.payload.card) {
-        buildCard(data.payload.card);
+      if (data.fulfillmentMessages.length && data.fulfillmentMessages[0].card) {
+        buildCard(data.fulfillmentMessages[0].card);
       }
 
       if (data.webhookPayload.fields.suggestions) {

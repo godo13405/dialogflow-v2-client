@@ -204,8 +204,9 @@ iframe {
 @keyframes bubble-in {
   0% {
     opacity: 0;
-    height: 0;
-    padding: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
 }
 
